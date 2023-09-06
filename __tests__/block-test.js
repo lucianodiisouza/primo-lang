@@ -1,4 +1,5 @@
 const assert = require('assert')
+const testUtil = require('./test-util')
 
 module.exports = (primo) => {
   assert.strictEqual(
@@ -33,5 +34,17 @@ module.exports = (primo) => {
     ]),
 
     100
+  )
+  testUtil.parse(
+    primo,
+    `
+    (
+      dale
+      (trem x 10)
+      (trem y 20)
+      (+ (* x 10) y)
+    )
+  `,
+    120
   )
 }
