@@ -35,7 +35,7 @@ class Primo {
     // Variable declaration
     if (expression[0] === 'trem') {
       const [_, name, value] = expression
-      return env.define(name, value)
+      return env.define(name, this.eval(value))
     }
 
     if (isVariableName(expression)) {
@@ -65,7 +65,14 @@ function isVariableName(expression) {
 }
 // Tests:
 
-const primo = new Primo()
+const primo = new Primo(
+  new Environment({
+    null: null,
+    true: true,
+    false: false,
+    VERSION: '0.1',
+  })
+)
 
 assert.strictEqual(primo.eval(1), 1)
 assert.strictEqual(primo.eval('"hello"'), 'hello')
@@ -81,5 +88,12 @@ assert.strictEqual(primo.eval('x'), 32)
 
 assert.strictEqual(primo.eval(['trem', 'y', 12]), 12)
 assert.strictEqual(primo.eval('y'), 12)
+
+assert.strictEqual(primo.eval('VERSION'), '0.1')
+
+assert.strictEqual(primo.eval(['trem', 'isUser', 'true']), true)
+
+assert.strictEqual(primo.eval(['trem', 'z', ['*', 2, 2]]), 4)
+assert.strictEqual(primo.eval('z'), 4)
 
 console.log('All assertions passed!')
