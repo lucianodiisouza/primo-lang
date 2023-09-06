@@ -25,16 +25,17 @@ class Primo {
 
     // Math operations (wip)
     if (expression[0] === '+') {
-      return this.eval(expression[1]) + this.eval(expression[2])
+      return this.eval(expression[1], env) + this.eval(expression[2], env)
     }
 
     if (expression[0] === '*') {
-      return this.eval(expression[1]) * this.eval(expression[2])
+      return this.eval(expression[1], env) * this.eval(expression[2], env)
     }
 
     // Block: sequence of expressions
     if (expression[0] === 'muncado') {
-      return this._evalBlock(expression, env)
+      const blockEnv = new Environment({}, env)
+      return this._evalBlock(expression, blockEnv)
     }
 
     // Variable declaration (trem name luciano)
@@ -125,4 +126,18 @@ assert.strictEqual(
   230
 )
 
+assert.strictEqual(
+  primo.eval(
+    ['muncado', ['trem', 'x', 10], ['muncado', ['trem', 'x', 20], 'x'], 'x'],
+    'x'
+  ),
+  10
+)
+
 console.log('All assertions passed!')
+
+/**
+ * mineirês naming dictionary
+ * trem = variável
+ * muncado = bloco
+ */
