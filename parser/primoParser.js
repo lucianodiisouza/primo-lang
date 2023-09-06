@@ -75,7 +75,7 @@ const productions = [[-1,1,(_1) => { __ = _1 }],
 [1,1,(_1) => { __ = _1 }],
 [2,3,(_1,_2,_3) => {  __ = _2  }],
 [3,2,(_1,_2) => {  _1.push(_2); __ = _1  }],
-[3,0,() => {  __ = [] }]];
+[3,0,() => {  __ = []  }]];
 
 /**
  * Encoded tokens map.
@@ -109,7 +109,7 @@ const lexRules = [[/^\(/, function() { return "'('"; }],
 [/^\s+/, function() { /* skip whitespace */ }],
 [/^"[^\"]*"/, function() { return 'STRING' }],
 [/^\d+/, function() { return 'NUMBER' }],
-[/^[\w\-+*=<>/]/, function() { return 'SYMBOL' }]];
+[/^[\w\-+*=<>/]+/, function() { return 'SYMBOL' }]];
 const lexRulesByConditions = {"INITIAL":[0,1,2,3,4,5]};
 
 const EOF_TOKEN = {
