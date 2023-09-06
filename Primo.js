@@ -22,36 +22,6 @@ class Primo {
       return expression.slice(1, -1)
     }
 
-    // Math operations (wip)
-    if (expression[0] === '+') {
-      return this.eval(expression[1], env) + this.eval(expression[2], env)
-    }
-
-    if (expression[0] === '*') {
-      return this.eval(expression[1], env) * this.eval(expression[2], env)
-    }
-
-    // Comparison operations (wip)
-    if (expression[0] === '>') {
-      return this.eval(expression[1], env) > this.eval(expression[2], env)
-    }
-
-    if (expression[0] === '>=') {
-      return this.eval(expression[1], env) >= this.eval(expression[2], env)
-    }
-
-    if (expression[0] === '<') {
-      return this.eval(expression[1], env) < this.eval(expression[2], env)
-    }
-
-    if (expression[0] === '<=') {
-      return this.eval(expression[1], env) <= this.eval(expression[2], env)
-    }
-
-    if (expression[0] === '=') {
-      return this.eval(expression[1], env) = this.eval(expression[2], env)
-    }
-
     // Block: sequence of expressions
     if (expression[0] === 'dale') {
       const blockEnv = new Environment({}, env)
@@ -90,9 +60,9 @@ class Primo {
     if (expression[0] === 'enquanto') {
       const [_tag, condition, body] = expression
 
-      let result;
+      let result
 
-      while(this.eval(condition, env)) {
+      while (this.eval(condition, env)) {
         result = this.eval(body, env)
       }
 
@@ -113,24 +83,66 @@ class Primo {
 
     return result
   }
+
+  _isNumber(expression) {
+    return typeof expression === 'number'
+  }
+
+  _isString(expression) {
+    return (
+      typeof expression === 'string' &&
+      expression[0] === '"' &&
+      expression.slice(-1) === '"'
+    )
+  }
+
+  _isVariableName(expression) {
+    return (
+      typeof expression === 'string' &&
+      /^[a-zA-Z][a-zA-z0-9]*$/.test(expression)
+    )
+  }
 }
 
-function isNumber(expression) {
-  return typeof expression === 'number'
-}
+/**
+ * Default Global Environment
+ */
 
-function isString(expression) {
-  return (
-    typeof expression === 'string' &&
-    expression[0] === '"' &&
-    expression.slice(-1) === '"'
-  )
-}
-
-function isVariableName(expression) {
-  return (
-    typeof expression === 'string' && /^[a-zA-Z][a-zA-z0-9]*$/.test(expression)
-  )
-}
+const GlobalEnvironment = new Environment({
+  null: null,
+  true: true,
+  false: false,
+  VERSION: '0.1',
+  '+'(op1, op2) {
+    return op1 + op2
+  },
+  '*'(op1, op2) {
+    return op1 * op2
+  },
+  '/'(op1, op2) {
+    return op1 / op2
+  },
+  '-'(op1, op2 = null) {
+    if (op2 === null) {
+      return -op1
+    }
+    return op1 - op2
+  },
+  '>'(op1, op2) {
+    return op1 > op2
+  },
+  '>='(op1, op2) {
+    return op1 >= op2
+  },
+  '<'(op1, op2) {
+    return op1 < op2
+  },
+  '<='(op1, op2) {
+    return op1 <= op2
+  },
+  '='(op1, op2) {
+    return op1 === op2
+  },
+})
 
 module.exports = Primo
