@@ -38,6 +38,10 @@ class Primo {
       return env.define(name, value)
     }
 
+    if (isVariableName(expression)) {
+      return env.lookup(expression)
+    }
+
     throw `Uninplemented - ${JSON.stringify(expression)}`
   }
 }
@@ -54,6 +58,11 @@ function isString(expression) {
   )
 }
 
+function isVariableName(expression) {
+  return (
+    typeof expression === 'string' && /^[a-zA-Z][a-zA-z0-9]*$/.test(expression)
+  )
+}
 // Tests:
 
 const primo = new Primo()
@@ -68,5 +77,9 @@ assert.strictEqual(primo.eval(['*', ['*', 3, 2], 5]), 30)
 
 // Variable tests
 assert.strictEqual(primo.eval(['trem', 'x', 32]), 32)
+assert.strictEqual(primo.eval('x'), 32)
+
+assert.strictEqual(primo.eval(['trem', 'y', 12]), 12)
+assert.strictEqual(primo.eval('y'), 12)
 
 console.log('All assertions passed!')
