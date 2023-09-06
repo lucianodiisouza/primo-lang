@@ -75,7 +75,7 @@ class Primo {
       return env.lookup(expression)
     }
 
-    // IF Expression
+    // IF (SE) Expression
     if (expression[0] === 'se') {
       const [_tag, condition, consequent, alternate] = expression
 
@@ -84,6 +84,19 @@ class Primo {
       }
 
       return this.eval(alternate, env)
+    }
+
+    // WHILE (Enquanto) Expression
+    if (expression[0] === 'enquanto') {
+      const [_tag, condition, body] = expression
+
+      let result;
+
+      while(this.eval(condition, env)) {
+        result = this.eval(body, env)
+      }
+
+      return result
     }
 
     throw `Uninplemented - ${JSON.stringify(expression)}`
