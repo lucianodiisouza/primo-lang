@@ -15,7 +15,11 @@ class Primo {
     }
 
     if (expression[0] === '+') {
-      return expression[1] + expression[2]
+      return this.eval(expression[1]) + this.eval(expression[2])
+    }
+
+    if (expression[0] === '*') {
+      return this.eval(expression[1]) * this.eval(expression[2])
     }
 
     throw 'Uninplemented'
@@ -40,7 +44,10 @@ const primo = new Primo()
 
 assert.strictEqual(primo.eval(1), 1)
 assert.strictEqual(primo.eval('"hello"'), 'hello')
+
+// Math tests
 assert.strictEqual(primo.eval(['+', 1, 5]), 6)
-assert.strictEqual(primo.eval(['+', ['+ ', 3, 2], 5]), 10)
+assert.strictEqual(primo.eval(['+', ['+', 3, 2], 5]), 10)
+assert.strictEqual(primo.eval(['*', ['*', 3, 2], 5]), 30)
 
 console.log('All assertions passed!')
