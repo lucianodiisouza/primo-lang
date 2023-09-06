@@ -2,10 +2,11 @@ const Primo = require('../Primo')
 const Environment = require('../Environment')
 
 const tests = [
-  require('./self-eval-test.js'),
-  require('./math-test.js'),
-  require('./block-test.js'),
-  require('./variables-test.js'),
+  require('./self-eval-test'),
+  require('./math-test'),
+  require('./block-test'),
+  require('./variables-test'),
+  require('./if-test'),
 ]
 
 const primo = new Primo(
