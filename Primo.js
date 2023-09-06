@@ -33,7 +33,7 @@ class Primo {
     }
 
     // Block: sequence of expressions
-    if (expression[0] === 'begin') {
+    if (expression[0] === 'dale') {
       const blockEnv = new Environment({}, env)
       return this._evalBlock(expression, blockEnv)
     }
@@ -44,8 +44,8 @@ class Primo {
       return env.define(name, this.eval(value))
     }
 
-    // Variable update (set name primo)
-    if (expression[0] === 'set') {
+    // Variable update (ponha name primo)
+    if (expression[0] === 'ponha') {
       const [_, name, value] = expression
       return env.assign(name, this.eval(value, env))
     }

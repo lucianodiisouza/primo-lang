@@ -3,7 +3,7 @@ const assert = require('assert')
 module.exports = (primo) => {
   assert.strictEqual(
     primo.eval([
-      'begin',
+      'dale',
       ['trem', 'x', 10],
       ['trem', 'y', 20],
       ['+', ['*', 'x', 'y'], 30],
@@ -13,9 +13,9 @@ module.exports = (primo) => {
 
   assert.strictEqual(
     primo.eval([
-      'begin',
+      'dale',
       ['trem', 'x', 10],
-      ['begin', ['trem', 'x', 20], 'x'],
+      ['dale', ['trem', 'x', 20], 'x'],
       'x',
     ]),
     10
@@ -23,11 +23,11 @@ module.exports = (primo) => {
 
   assert.strictEqual(
     primo.eval([
-      'begin',
+      'dale',
 
       ['trem', 'data', 10],
 
-      ['begin', ['set', 'data', 100]],
+      ['dale', ['ponha', 'data', 100]],
 
       'data',
     ]),
