@@ -13,7 +13,6 @@ class Primo {
     this.global = global
   }
 
-  // Expressions evaluation
   eval(expression, env = this.global) {
     if (isNumber(expression)) {
       return expression
@@ -30,6 +29,27 @@ class Primo {
 
     if (expression[0] === '*') {
       return this.eval(expression[1], env) * this.eval(expression[2], env)
+    }
+
+    // Comparison operations (wip)
+    if (expression[0] === '>') {
+      return this.eval(expression[1], env) > this.eval(expression[2], env)
+    }
+
+    if (expression[0] === '>=') {
+      return this.eval(expression[1], env) >= this.eval(expression[2], env)
+    }
+
+    if (expression[0] === '<') {
+      return this.eval(expression[1], env) < this.eval(expression[2], env)
+    }
+
+    if (expression[0] === '<=') {
+      return this.eval(expression[1], env) <= this.eval(expression[2], env)
+    }
+
+    if (expression[0] === '=') {
+      return this.eval(expression[1], env) = this.eval(expression[2], env)
     }
 
     // Block: sequence of expressions
@@ -53,6 +73,17 @@ class Primo {
     // Variable access (name)
     if (isVariableName(expression)) {
       return env.lookup(expression)
+    }
+
+    // IF Expression
+    if (expression[0] === 'se') {
+      const [_tag, condition, consequent, alternate] = expression
+
+      if (this.eval(condition, env)) {
+        return this.eval(consequent, env)
+      }
+
+      return this.eval(alternate, env)
     }
 
     throw `Uninplemented - ${JSON.stringify(expression)}`
