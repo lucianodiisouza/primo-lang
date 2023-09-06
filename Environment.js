@@ -6,8 +6,9 @@ class Environment {
   /**
    * Creates an environment with the given record
    */
-  constructor(record = {}) {
+  constructor(record = {}, parent = null) {
     this.record = record
+    this.parent = parent
   }
   /**
    * Creates a variable with the given name and value
