@@ -7,6 +7,7 @@ const tests = [
   require('./block-test'),
   require('./variables-test'),
   require('./if-test'),
+  require('./while-test'),
 ]
 
 const primo = new Primo(
