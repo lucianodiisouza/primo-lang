@@ -35,7 +35,8 @@ module.exports = (primo) => {
 
     100
   )
-  testUtil.parse(
+
+  testUtil.test(
     primo,
     `
     (
