@@ -33,7 +33,7 @@ class Primo {
     }
 
     // Block: sequence of expressions
-    if (expression[0] === 'muncado') {
+    if (expression[0] === 'begin') {
       const blockEnv = new Environment({}, env)
       return this._evalBlock(expression, blockEnv)
     }
@@ -42,6 +42,12 @@ class Primo {
     if (expression[0] === 'trem') {
       const [_, name, value] = expression
       return env.define(name, this.eval(value))
+    }
+
+    // Variable update (set name primo)
+    if (expression[0] === 'set') {
+      const [_, name, value] = expression
+      return env.assign(name, this.eval(value, env))
     }
 
     // Variable access (name)
@@ -118,7 +124,7 @@ assert.strictEqual(primo.eval('z'), 4)
 // blocks
 assert.strictEqual(
   primo.eval([
-    'muncado',
+    'begin',
     ['trem', 'x', 10],
     ['trem', 'y', 20],
     ['+', ['*', 'x', 'y'], 30],
@@ -127,17 +133,27 @@ assert.strictEqual(
 )
 
 assert.strictEqual(
-  primo.eval(
-    ['muncado', ['trem', 'x', 10], ['muncado', ['trem', 'x', 20], 'x'], 'x'],
-    'x'
-  ),
+  primo.eval([
+    'begin',
+    ['trem', 'x', 10],
+    ['begin', ['trem', 'x', 20], 'x'],
+    'x',
+  ]),
   10
 )
 
-console.log('All assertions passed!')
+assert.strictEqual(
+  primo.eval([
+    'begin',
 
-/**
- * mineirês naming dictionary
- * trem = variável
- * muncado = bloco
- */
+    ['trem', 'data', 10],
+
+    ['begin', ['set', 'data', 100]],
+
+    'data',
+  ]),
+
+  100
+)
+
+console.log('All assertions passed!')

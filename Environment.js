@@ -22,11 +22,29 @@ class Environment {
    * if the variable is not defined
    */
   lookup(name) {
-    if (!this.record.hasOwnProperty(name)) {
-      throw new ReferenceError(`Trem "${name}" is not defined.`)
+    return this.resolve(name).record[name]
+  }
+  /**
+   * Returns specific environment in which a variable is defined, or
+   * throws if a variable is not defined
+   */
+  resolve(name) {
+    if (this.record.hasOwnProperty(name)) {
+      return this
     }
 
-    return this.record[name]
+    if (this.parent == null) {
+      throw new ReferenceError(`Trem "${name}" is not defined`)
+    }
+
+    return this.parent.resolve(name)
+  }
+  /**
+   * Updates an existing variable
+   */
+  assign(name, value) {
+    this.resolve(name).record[name] = value
+    return value
   }
 }
 
