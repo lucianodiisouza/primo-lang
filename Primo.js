@@ -88,3 +88,5 @@ function isVariableName(expression) {
     typeof expression === 'string' && /^[a-zA-Z][a-zA-z0-9]*$/.test(expression)
   )
 }
+
+module.exports = Primo
