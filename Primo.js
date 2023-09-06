@@ -32,17 +32,35 @@ class Primo {
       return this.eval(expression[1]) * this.eval(expression[2])
     }
 
-    // Variable declaration
+    // Block: sequence of expressions
+    if (expression[0] === 'muncado') {
+      return this._evalBlock(expression, env)
+    }
+
+    // Variable declaration (trem name luciano)
     if (expression[0] === 'trem') {
       const [_, name, value] = expression
       return env.define(name, this.eval(value))
     }
 
+    // Variable access (name)
     if (isVariableName(expression)) {
       return env.lookup(expression)
     }
 
     throw `Uninplemented - ${JSON.stringify(expression)}`
+  }
+
+  _evalBlock(block, env) {
+    let result
+
+    const [_tag, ...expressions] = block
+
+    expressions.forEach((expression) => {
+      result = this.eval(expression, env)
+    })
+
+    return result
   }
 }
 
@@ -95,5 +113,16 @@ assert.strictEqual(primo.eval(['trem', 'isUser', 'true']), true)
 
 assert.strictEqual(primo.eval(['trem', 'z', ['*', 2, 2]]), 4)
 assert.strictEqual(primo.eval('z'), 4)
+
+// blocks
+assert.strictEqual(
+  primo.eval([
+    'muncado',
+    ['trem', 'x', 10],
+    ['trem', 'y', 20],
+    ['+', ['*', 'x', 'y'], 30],
+  ]),
+  230
+)
 
 console.log('All assertions passed!')
